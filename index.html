@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence to Advocacy Toolkit | Ground Truth Institute</title>
+<meta name="description" content="A free tool helping local CSOs, CBOs, and NGOs turn field evidence into funding proposals, donor advocacy briefs, and digital communications.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.30.0/iconfont/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0A6E5C;
+  --teal-dark:#085041;
+  --teal-light:#E1F5EE;
+  --navy:#0D2137;
+  --blue:#185FA5;
+  --blue-light:#E6F1FB;
+  --amber:#BA7517;
+  --amber-light:#FAEEDA;
+  --red:#A32D2D;
+  --red-light:#FCEBEB;
+  --green:#0F6E56;
+  --green-light:#E8F8F2;
+  --gray:#5D6D7A;
+  --gray-light:#F4F6F8;
+  --border:#DDE2E8;
+  --text:#1A1A1A;
+  --text-secondary:#5D6D7A;
+  --radius:8px;
+  --radius-lg:12px;
+}
+html{font-size:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F0F4F3;color:var(--text);min-height:100vh;padding:1.5rem 1rem 3rem}
+.page{max-width:740px;margin:0 auto}
+
+/* HEADER */
+.site-header{margin-bottom:1.75rem}
+.site-header .logo{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.site-header .logo-mark{width:36px;height:36px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#E1F5EE;font-size:18px}
+.site-header .logo-text{font-size:16px;font-weight:600;color:var(--navy)}
+.site-header .logo-sub{font-size:12px;color:var(--gray)}
+.hero{background:var(--navy);border-radius:var(--radius-lg);padding:1.5rem;color:white;margin-bottom:1.5rem}
+.hero h1{font-size:20px;font-weight:600;margin-bottom:6px;line-height:1.3}
+.hero p{font-size:13px;opacity:.8;line-height:1.6;margin-bottom:1rem}
+.hero-meta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-badge{font-size:11px;background:rgba(255,255,255,.12);padding:4px 10px;border-radius:20px;color:rgba(255,255,255,.85);display:flex;align-items:center;gap:5px}
+
+/* PROGRESS */
+.progress-wrap{background:white;border-radius:var(--radius);padding:.875rem 1rem;border:1px solid var(--border);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+.progress-bar{display:flex;gap:4px;flex:1}
+.pip{height:5px;border-radius:3px;flex:1;background:var(--gray-light);transition:background .3s}
+.pip.done{background:var(--teal)}
+.pip.active{background:#1D9E75}
+.progress-label{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+
+/* STAGE */
+.stage-card{background:white;border-radius:var(--radius-lg);padding:1.5rem;border:1px solid var(--border)}
+.stage{display:none}
+.stage.active{display:block}
+.stage-tag{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.stage-title{font-size:19px;font-weight:600;color:var(--navy);margin-bottom:6px}
+.stage-desc{font-size:13px;color:var(--text-secondary);margin-bottom:1.5rem;line-height:1.65}
+hr.section-divider{border:none;border-top:1px solid var(--gray-light);margin:1.25rem 0}
+
+/* ALERTS */
+.alert{border-radius:var(--radius);padding:10px 14px;font-size:13px;line-height:1.5;margin-bottom:1rem;display:flex;gap:8px;align-items:flex-start}
+.alert i{font-size:16px;flex-shrink:0;margin-top:1px}
+.alert-info{background:var(--blue-light);color:#042C53;border:1px solid #85B7EB}
+.alert-info i{color:var(--blue)}
+.alert-warn{background:var(--amber-light);color:#633806;border:1px solid #EF9F27}
+.alert-warn i{color:var(--amber)}
+.alert-danger{background:var(--red-light);color:#501313;border:1px solid #F09595}
+.alert-danger i{color:var(--red)}
+.alert-success{background:var(--green-light);color:#04342C;border:1px solid #5DCAA5}
+.alert-success i{color:var(--green)}
+
+/* FIELDS */
+.field-block{margin-bottom:1.25rem}
+.field-label{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;display:block}
+.field-hint{font-size:12px;color:var(--text-secondary);margin-bottom:7px;line-height:1.55;font-style:italic}
+textarea,input[type=text]{width:100%;font-size:13px;font-family:inherit;background:white;color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:9px 11px;resize:vertical;transition:border-color .15s}
+textarea{min-height:80px;line-height:1.55}
+textarea:focus,input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(10,110,92,.12)}
+.char-count{font-size:11px;color:#aaa;text-align:right;margin-top:3px}
+.radio-group,.check-group{display:flex;flex-direction:column;gap:6px}
+.radio-opt,.check-opt{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;font-size:13px;color:var(--text);line-height:1.45;transition:background .1s,border-color .1s}
+.radio-opt:hover,.check-opt:hover{background:var(--gray-light)}
+.radio-opt.sel,.check-opt.sel{background:var(--teal-light);border-color:var(--teal);color:var(--teal-dark)}
+.radio-opt input,.check-opt input{margin-top:2px;flex-shrink:0;accent-color:var(--teal);width:14px;height:14px}
+
+/* NAV */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.75rem;gap:10px}
+.btn-back{padding:9px 18px;font-size:13px;cursor:pointer;border-radius:var(--radius);background:transparent;color:var(--text-secondary);border:1px solid var(--border);font-family:inherit;transition:background .15s}
+.btn-back:hover{background:var(--gray-light)}
+.btn-next{padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;border-radius:var(--radius);background:var(--teal);color:white;border:none;font-family:inherit;transition:background .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-next:hover{background:var(--teal-dark)}
+
+/* OUTPUT */
+.output-panel{background:white;border-radius:var(--radius-lg);border:1px solid var(--border);padding:1.25rem;margin-bottom:1rem}
+.output-label{font-size:11px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.output-body{font-size:12.5px;color:var(--text-secondary);line-height:1.75;white-space:pre-wrap;background:var(--gray-light);border-radius:var(--radius);padding:1rem;border:1px solid var(--border);max-height:440px;overflow-y:auto;font-family:'Courier New',monospace}
+.copy-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;font-size:12px;cursor:pointer;border-radius:var(--radius);background:var(--gray-light);color:var(--text-secondary);border:1px solid var(--border);margin-top:10px;font-family:inherit;transition:background .15s}
+.copy-btn:hover{background:var(--border)}
+.tab-row{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.tab-btn{padding:7px 15px;font-size:13px;cursor:pointer;border-radius:var(--radius);border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-family:inherit;display:flex;align-items:center;gap:5px;transition:background .15s}
+.tab-btn:hover{background:var(--gray-light)}
+.tab-btn.active{background:var(--teal-light);border-color:var(--teal);color:var(--teal-dark);font-weight:500}
+.osec{display:none}
+.osec.active{display:block}
+.where-card{background:var(--gray-light);border-radius:var(--radius);border:1px solid var(--border);padding:10px 13px;margin-bottom:8px}
+.where-card-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.where-card-body{font-size:12px;color:var(--text-secondary);line-height:1.55}
+.reset-btn{padding:9px 16px;font-size:13px;cursor:pointer;border-radius:var(--radius);background:transparent;color:var(--text-secondary);border:1px solid var(--border);font-family:inherit}
+.reset-btn:hover{background:var(--gray-light)}
+
+/* FOOTER */
+.site-footer{margin-top:2rem;text-align:center;font-size:12px;color:var(--text-secondary);line-height:1.7}
+.site-footer a{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="site-header">
+    <div class="logo">
+      <div class="logo-mark"><i class="ti ti-plant-2" aria-hidden="true"></i></div>
+      <div>
+        <div class="logo-text">Ground Truth Institute</div>
+        <div class="logo-sub">Evidence. Practice. Policy. Impact.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>Evidence to Advocacy Toolkit</h1>
+    <p>For local CSOs, CBOs, and NGOs in fragile and conflict-affected contexts. Turn your field experience into funding proposals, donor advocacy briefs, and digital communications that tell your story on your own terms. Takes 15 to 20 minutes.</p>
+    <div class="hero-meta">
+      <span class="hero-badge"><i class="ti ti-clock" aria-hidden="true"></i> 15 to 20 minutes</span>
+      <span class="hero-badge"><i class="ti ti-device-laptop" aria-hidden="true"></i> Works offline</span>
+      <span class="hero-badge"><i class="ti ti-lock" aria-hidden="true"></i> No data stored</span>
+      <span class="hero-badge"><i class="ti ti-world" aria-hidden="true"></i> Free to use</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar" id="pips"></div>
+    <span class="progress-label" id="plbl">Step 1 of 6</span>
+  </div>
+
+  <div class="stage-card" id="sc"></div>
+
+  <div class="site-footer">
+    <p>Built by <a href="#">Ground Truth Institute</a> to support local organisations in fragile and conflict-affected contexts.</p>
+    <p>Free to use and share. <a href="https://github.com/[your-handle]/evidence-toolkit" target="_blank">View source on GitHub</a></p>
+    <p style="margin-top:6px;font-size:11px;opacity:.7">No data you enter is stored or transmitted. Everything stays on your device.</p>
+  </div>
+
+</div>
+
+<script>
+const S=[
+{id:"org",tag:"Stage 1 of 6",title:"Your organisation",desc:"Tell us about who you are and where you work. This shapes everything that follows.",fields:[
+  {id:"org_name",t:"text",label:"Organisation name",hint:"What is your organisation called?",ph:"e.g. Karen Development Network"},
+  {id:"org_type",t:"radio",label:"Type of organisation",hint:"Select the type that best describes your organisation.",opts:["Community-based organisation (CBO)","Local NGO","Civil society network or coalition","Faith-based organisation","Women-led organisation","Community cooperative or savings group","Disability-led organisation","Other local organisation"]},
+  {id:"country",t:"text",label:"Country and area where you work",hint:"Include the region, state, or township if relevant.",ph:"e.g. Kayin State, Myanmar"},
+  {id:"community",t:"textarea",label:"Who are the people your organisation works with?",hint:"Include relevant characteristics such as women, displaced people, persons with disabilities, ethnic minorities, refugees, elderly, children.",ph:"e.g. Conflict-displaced women and their families in remote border villages, including ethnic minority communities."},
+  {id:"years",t:"radio",label:"How long has your organisation been working in this area?",hint:"",opts:["Less than 1 year","1 to 3 years","3 to 5 years","More than 5 years"]},
+  {id:"funding_model",t:"radio",label:"How does your organisation currently receive funding?",hint:"This shapes how we frame your advocacy ask.",opts:["Mainly as a sub-grantee or implementing partner under an INGO or UN agency","Mainly through direct grants from donors","A mix of direct and sub-grants","We mainly self-fund or rely on community contributions","We are currently seeking our first external funding"]},
+  {id:"visibility",t:"radio",label:"What is your organisation's current visibility approach?",hint:"Some organisations must stay low-profile for safety. Others can and should be publicly visible to strengthen their advocacy and access direct funding. Both are valid. Your answer shapes the documents we generate.",opts:["Low profile: we do not publicly identify our organisation or programme locations for security reasons","Moderate profile: we share some information publicly but are careful about sensitive details","Publicly visible: we can share our name, work, and location openly","We are transitioning toward more public visibility as our situation allows"]}
+]},
+{id:"evidence",tag:"Stage 2 of 6",title:"What evidence do you have?",desc:"You do not need formal reports or digital data. Be honest about what you have. Rough notes and community observations count.",info:{type:"info",text:"Many local organisations in conflict contexts use manual paper systems, cannot safely carry documents through checkpoints, and have limited internet access. This toolkit is designed for these realities."},fields:[
+  {id:"ev_types",t:"check",label:"What kinds of documentation or information do you have? Select all that apply.",hint:"Tick only what you actually have, even if it is incomplete.",opts:["Lists of beneficiaries or households reached (even rough numbers)","Paper-based records of activities: meetings held, distributions done, trainings delivered","Monitoring data: attendance sheets, sign-in sheets, activity logs","Community feedback or verbal comments you have recorded as notes","Notes from focus group discussions or community meetings","Needs assessment data from field surveys","Photos or visual records of programme activities","Case studies or individual stories from beneficiaries","Evaluation or outcome data from a formal assessment","Financial records: savings amounts, cash distributed, loans issued","Nothing formal: mainly observations and experience from field staff"]},
+  {id:"no_data",t:"textarea",label:"If you have limited documentation, explain why",hint:"This is itself important evidence about your operating conditions.",ph:"e.g. We work under low-profile conditions due to security risks. Field staff cannot carry written records through checkpoints. We use manual paper forms and do not have computers or internet access in field locations."},
+  {id:"numbers",t:"textarea",label:"Key numbers from your programme (leave blank for any you do not have)",hint:"Even rough estimates are valuable. Write what you know.",ph:"e.g. People reached: approximately 240 households across 6 villages. Cash distributed: 18 million kyat. Meetings held: 52 over 12 months. Repayment rate: about 90%."},
+  {id:"digital_gap",t:"radio",label:"What is your organisation's current situation with digital tools and systems?",hint:"Your answer helps us tailor the documents and identify relevant capacity needs to highlight.",opts:["We use manual paper-based systems only","We have basic digital tools such as mobile phones and basic spreadsheets but no systems","We have some digital systems but they are not consistent or secure","We have good digital systems but need more resources and training","We have strong digital systems"]}
+]},
+{id:"story",tag:"Stage 3 of 6",title:"The story your evidence tells",desc:"Tell us what your work shows in plain language. This does not need to be formal writing.",fields:[
+  {id:"problem",t:"textarea",label:"What is the problem your organisation addresses?",hint:"Describe it as you would explain it to someone visiting your community for the first time.",ph:"e.g. Women in our area lost their livelihoods when conflict forced them to flee. When they returned there were no savings systems, no credit access, and moneylenders charging 10% monthly interest were the only option."},
+  {id:"what_we_do",t:"textarea",label:"What does your organisation actually do to address this?",hint:"Be concrete and specific about your activities.",ph:"e.g. We facilitate weekly savings meetings with 15 to 20 women per group. We train group leaders on financial record-keeping. After 6 months of savings, groups access collective loans for small business investments."},
+  {id:"change",t:"textarea",label:"What change have you seen or heard from the people you work with?",hint:"This can be formal evaluation data, your own observations, or things community members have told you.",ph:"e.g. Women in our groups told us they no longer borrow from moneylenders. Three groups started collective chicken farming businesses. One group leader said: we now make our own decisions about money in our household."},
+  {id:"gesi_change",t:"textarea",label:"Have you seen specific changes for women, people with disabilities, or other excluded groups?",hint:"Gender and inclusion evidence is especially important for donor audiences.",ph:"e.g. Women who joined savings groups reported more confidence in household financial decisions. Two members with disabilities who were previously excluded from community activities are now active group leaders."},
+  {id:"sector_hopping",t:"radio",label:"Has your organisation been pushed to work across multiple sectors to follow funding rather than staying in your area of expertise?",hint:"Research with local organisations in Myanmar shows this is a common structural consequence of how funding is channelled, not a choice.",opts:["Yes, we frequently shift sectors to follow available funding","Yes, sometimes, but we try to stay focused","No, we have managed to stay within our core expertise","We are a generalist organisation by design"]}
+]},
+{id:"gap",tag:"Stage 4 of 6",title:"The system problem and your ask",desc:"This is the most important part for advocacy. Help us understand what the system gets wrong beyond your programme.",info:{type:"info",text:"Research with local organisations in Myanmar shows the most powerful evidence is the specific description of the funding structure: how much reaches you, how design decisions exclude you, the evidence burden in impossible conditions, and the communications gap that makes your work invisible."},fields:[
+  {id:"barrier",t:"textarea",label:"What is the biggest structural barrier preventing your work from reaching more people?",hint:"Common barriers include: funding absorbed by INGO intermediaries, short-term contracts forcing sector hopping, impossible evidence requirements in conflict settings, exclusion from programme design, and lack of communications resources.",ph:"e.g. We receive funding as a sub-implementer from an INGO. By the time the donor funding reaches us 25 to 30% has already been taken as indirect costs. We implement the programme but have no say in the design. Our contract is 6 months at a time so we cannot retain staff or plan ahead."},
+  {id:"funding_problem",t:"textarea",label:"Can you describe the specific funding structure problem you face?",hint:"Be specific about numbers if you can. This is very powerful evidence for localisation advocacy.",ph:"e.g. The donor gives $500,000 to an international NGO. The INGO takes $125,000 in indirect costs. They give us $80,000 to implement the community work that reaches 400 families. The INGO writes the reports and gets the credit. We often do not even know which donor sits behind the project."},
+  {id:"evidence_burden",t:"textarea",label:"Are there donor evidence or reporting requirements that are impossible or unsafe to meet in your context?",hint:"Donors are often unaware of the impossible burden they place on local organisations in conflict settings. This is an important advocacy point.",ph:"e.g. Donors require signed beneficiary lists with full names. In our area beneficiaries cannot sign documents because it could identify them to armed groups. The evidence requirements were designed for stable contexts, not conflict zones."},
+  {id:"communications_gap",t:"textarea",label:"Do you face a communications or visibility gap? Can you tell your own story publicly?",hint:"Research shows international organisations dominate donor narratives because they have dedicated communications budgets. Local organisations carry out the work but rarely receive the credit or visibility, which also limits their funding prospects.",ph:"e.g. We do not have a website or social media presence because we cannot afford it. When the INGO reports to the donor they are named as the implementing organisation. We carry out 80% of the field work but receive less than 20% of the credit and the funding."},
+  {id:"ask",t:"textarea",label:"If you could ask one thing from donors, INGOs, or UN agencies, what would it be?",hint:"Be specific. The most powerful asks are concrete and actionable.",ph:"e.g. Give us direct grants of at least 2 to 3 years duration. Accept alternative forms of evidence appropriate for conflict contexts. Include us in programme design from the beginning. Give us communications budgets so we can tell our own story."},
+  {id:"scale",t:"textarea",label:"What would additional direct funding allow you to do?",hint:"Concrete numbers and timelines make asks more compelling.",ph:"e.g. With $50,000 direct funding over 2 years we could expand from 6 to 20 villages and reach 600 more households. We already have trained staff, community relationships, and systems ready."}
+]},
+{id:"safety",tag:"Stage 5 of 6",title:"Safety and visibility check",desc:"Confirm what is safe to share before we generate your documents.",info:{type:"warn",text:"Documents shared with international organisations can create real security risks. Never include information that could identify vulnerable community members, reveal programme locations in conflict areas, or reference political parties or politicians."},infoB:{type:"info",text:"On visibility: some organisations must stay low-profile. Others can and should be publicly visible. Being visible is a legitimate and important step toward direct donor access and reducing dependence on intermediaries."},fields:[
+  {id:"safe_confirm",t:"check",label:"For documents you will share publicly or with donors, confirm the following. Check all that apply.",hint:"",opts:[
+    "I have not included full names of individual beneficiaries without their consent",
+    "I have not included exact locations of activities in areas where this creates security risk",
+    "I have not named specific armed groups, military units, or political actors",
+    "I have not named or criticised specific political parties or politicians",
+    "I have not included photos showing faces without consent",
+    "I have not included information about which communities have received cash transfers",
+    "I have anonymised staff names who work in high-risk locations"
+  ]},
+  {id:"safe_unsure",t:"textarea",label:"Is there anything in your evidence you are unsure about sharing?",hint:"Describe it briefly. We will add a handling note in your document.",ph:"e.g. We have photos from field activities and are not sure which ones are safe to share."},
+  {id:"visibility_goal",t:"radio",label:"For organisations seeking greater visibility: what is your main goal?",hint:"If you are low-profile for safety reasons, select the last option.",opts:[
+    "We want donors to know who we are so they can fund us directly",
+    "We want to build a public profile so we can advocate on behalf of our communities",
+    "We want to be recognised and credited for the work we actually do",
+    "All three of the above",
+    "We are low-profile and this does not apply to us right now"
+  ]}
+]},
+{id:"purpose",tag:"Stage 6 of 6",title:"What do you want to produce?",desc:"Choose your outputs. You can select more than one.",fields:[
+  {id:"output",t:"check",label:"What documents do you need?",hint:"Select all that apply.",opts:[
+    "A project concept note: to share with donors, INGOs, or UN agencies for direct funding or partnership",
+    "A donor advocacy brief: to influence how donors structure funding and partnerships with local organisations",
+    "A digital advocacy post: a shareable version for your website, social media, or digital channels to build your public profile and tell your own story"
+  ]},
+  {id:"primary_audience",t:"radio",label:"For the concept note: who is your primary audience?",hint:"",opts:["International NGO seeking local implementing partners","Bilateral donor (FCDO, USAID, EU, DANIDA, AusAID)","UN agency (UNICEF, UNHCR, UN Women, UNFPA, WFP)","Corporate foundation or CSR programme","Local donor or diaspora funding network","Not sure yet"]},
+  {id:"digital_platform",t:"radio",label:"For the digital post: where do you plan to share it?",hint:"",opts:["Facebook or social media (shorter, plain language version)","Organisation website or newsletter","LinkedIn or professional networks","Sector platform such as Devex or ReliefWeb","Multiple channels","Not sure yet"]}
+]}
+];
+
+let cur=0,ans={};
+
+function bp(){
+  document.getElementById('pips').innerHTML=S.map((_,i)=>`<div class="pip ${i<cur?'done':i===cur?'active':''}" id="p${i}"></div>`).join('');
+  document.getElementById('plbl').textContent=`Step ${cur+1} of ${S.length}`;
+}
+
+function alert_html(type,text){return`<div class="alert alert-${type}"><i class="ti ${type==='info'?'ti-info-circle':type==='warn'?'ti-alert-triangle':type==='danger'?'ti-alert-triangle':'ti-check'}" aria-hidden="true"></i><span>${text}</span></div>`;}
+
+function bs(idx){
+  const st=S[idx];
+  const c=document.getElementById('sc');
+  let h=`<div class="stage active">
+  <div class="stage-tag">${st.tag}</div>
+  <div class="stage-title">${st.title}</div>
+  <p class="stage-desc">${st.desc}</p>`;
+  if(st.info)h+=alert_html(st.info.type,st.info.text);
+  if(st.infoB)h+=alert_html(st.infoB.type,st.infoB.text);
+
+  st.fields.forEach(f=>{
+    h+=`<div class="field-block"><label class="field-label" for="${f.id}">${f.label}</label>`;
+    if(f.hint)h+=`<div class="field-hint">${f.hint}</div>`;
+    if(f.t==='text')h+=`<input type="text" id="${f.id}" placeholder="${f.ph||''}" value="${ans[f.id]||''}">`;
+    else if(f.t==='textarea')h+=`<textarea id="${f.id}" placeholder="${f.ph||''}">${ans[f.id]||''}</textarea><div class="char-count" id="${f.id}c">0 characters</div>`;
+    else if(f.t==='radio'){
+      const sv=ans[f.id]||'';
+      h+=`<div class="radio-group">${f.opts.map((o,i)=>`<label class="radio-opt ${sv===o?'sel':''}" id="r_${f.id}_${i}"><input type="radio" name="${f.id}" value="${o}" ${sv===o?'checked':''}>${o}</label>`).join('')}</div>`;
+    } else if(f.t==='check'){
+      const sv=ans[f.id]||[];
+      h+=`<div class="check-group">${f.opts.map((o,i)=>`<label class="check-opt ${sv.includes(o)?'sel':''}" id="c_${f.id}_${i}"><input type="checkbox" name="${f.id}" value="${o}" ${sv.includes(o)?'checked':''}>${o}</label>`).join('')}</div>`;
+    }
+    h+=`</div>`;
+  });
+
+  h+=`<div class="nav-row">`;
+  if(idx>0)h+=`<button class="btn-back" onclick="gb()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>`;
+  else h+=`<div></div>`;
+  if(idx<S.length-1)h+=`<button class="btn-next" onclick="gn()">Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`;
+  else h+=`<button class="btn-next" onclick="gen()"><i class="ti ti-file-text" aria-hidden="true"></i> Generate my documents</button>`;
+  h+=`</div></div>`;
+  c.innerHTML=h;
+  al(st);
+}
+
+function al(st){
+  st.fields.forEach(f=>{
+    if(f.t==='text'){const e=document.getElementById(f.id);if(e)e.addEventListener('input',()=>{ans[f.id]=e.value});}
+    else if(f.t==='textarea'){
+      const e=document.getElementById(f.id),ct=document.getElementById(f.id+'c');
+      if(e){e.addEventListener('input',()=>{ans[f.id]=e.value;if(ct)ct.textContent=e.value.length+' characters'});}
+      if(e&&ct)ct.textContent=(e.value||'').length+' characters';
+    }else if(f.t==='radio'){
+      document.querySelectorAll(`input[name="${f.id}"]`).forEach((inp,i)=>{
+        inp.addEventListener('change',()=>{
+          ans[f.id]=inp.value;
+          document.querySelectorAll(`[id^="r_${f.id}_"]`).forEach((l,j)=>l.classList.toggle('sel',j===i));
+        });
+      });
+    }else if(f.t==='check'){
+      document.querySelectorAll(`input[name="${f.id}"]`).forEach(inp=>{
+        inp.addEventListener('change',()=>{
+          if(!ans[f.id])ans[f.id]=[];
+          if(inp.checked){if(!ans[f.id].includes(inp.value))ans[f.id].push(inp.value);}
+          else{ans[f.id]=ans[f.id].filter(v=>v!==inp.value);}
+          document.querySelectorAll(`[id^="c_${f.id}_"]`).forEach(l=>{const cb=l.querySelector('input');if(cb)l.classList.toggle('sel',cb.checked);});
+        });
+      });
+    }
+  });
+}
+
+function sv(){S[cur].fields.forEach(f=>{const e=document.getElementById(f.id);if(!e)return;if(f.t==='text'||f.t==='textarea')ans[f.id]=e.value;});}
+function gn(){sv();cur++;bp();bs(cur);window.scrollTo(0,0);}
+function gb(){sv();cur--;bp();bs(cur);window.scrollTo(0,0);}
+
+function gen(){
+  sv();
+  const a=ans;
+  const org=a.org_name||'Our organisation';
+  const country=a.country||'our region';
+  const community=a.community||'the communities we serve';
+  const problem=a.problem||'[Describe the problem]';
+  const whatwedo=a.what_we_do||'[Describe your activities]';
+  const change=a.change||'[Describe the change you observed]';
+  const gesi=a.gesi_change||'';
+  const numbers=a.numbers||'';
+  const barrier=a.barrier||'';
+  const fundprob=a.funding_problem||'';
+  const evburden=a.evidence_burden||'';
+  const comgap=a.communications_gap||'';
+  const ask=a.ask||'';
+  const scale=a.scale||'';
+  const evtypes=(a.ev_types||[]).join(', ');
+  const nodata=a.no_data||'';
+  const visprofile=a.visibility||'';
+  const sectorhop=a.sector_hopping||'';
+  const outTypes=a.output||[];
+  const wC=outTypes.some(o=>o.includes('concept'));
+  const wA=outTypes.some(o=>o.includes('advocacy'));
+  const wD=outTypes.some(o=>o.includes('digital'));
+  const isLow=visprofile.toLowerCase().includes('low');
+  const safeNote=isLow?
+    'LOW PROFILE NOTE: This organisation operates under low-profile security conditions. Before sharing, remove all specific location names, staff names, and details that could identify programme areas or beneficiaries. Share only with trusted contacts under confidentiality.':
+    'SAFETY REMINDER: Review this document before sharing. Remove any information that could identify vulnerable individuals or reveal programme locations in sensitive areas.';
+
+  const concept=`PROJECT CONCEPT NOTE
+${org} | ${country} | [Date: insert before sending]
+
+${safeNote}
+
+ABOUT US
+${org} is a ${a.org_type||'locally-based organisation'} working in ${country}. We have been active in this area for ${a.years||'[duration]'}, working directly with ${community}.
+${a.funding_model?'\nCurrent funding model: '+a.funding_model:''}
+
+THE PROBLEM WE ADDRESS
+${problem}
+
+WHAT WE DO
+${whatwedo}
+
+EVIDENCE FROM OUR WORK
+Our evidence is drawn from: ${evtypes||'[describe your evidence]'}.
+${nodata?'\nNote on evidence in our context:\n'+nodata:''}
+${numbers?'\nKey results:\n'+numbers:''}
+
+What we have observed:
+${change}
+${gesi?'\nGender and inclusion outcomes:\n'+gesi:''}
+
+WHY WE NEED DIRECT SUPPORT
+${barrier}
+${fundprob?'\nThe current funding structure:\n'+fundprob:''}
+${evburden?'\nEvidence collection in our context:\n'+evburden:''}
+${comgap?'\nVisibility and communications gap:\n'+comgap:''}
+
+WHAT WE ARE ASKING FOR
+${ask}
+${scale?'\nWhat direct funding would enable:\n'+scale:''}
+
+CONTACT
+[Name and title]
+${org}
+[Email: only include if safe to share]
+[Phone: only include if safe to share]
+${!isLow?'[Website and social media if applicable]':''}
+
+EDITOR NOTES: Fill all [brackets] before sending. Review the safety note above. Remove any information that creates security risk.`;
+
+  const advBrief=`DONOR ADVOCACY BRIEF
+${org} | ${country} | [Date]
+
+${safeNote}
+
+KEY MESSAGE
+[Write 1 to 2 sentences. Example: Local organisations like ours deliver the majority of frontline social protection in crisis contexts, yet current funding structures route 25 to 30% of donor resources through INGO intermediaries before they reach us, while also excluding us from programme design and denying us communications budgets. Direct, flexible, multi-year funding to locally-rooted organisations would deliver better outcomes at lower cost.]
+
+WHO WE ARE AND WHAT WE DO
+${org} works in ${country} with ${community}. We have been delivering programmes for ${a.years||'[duration]'}.
+
+Our programmes address:
+${problem}
+
+EVIDENCE FROM THE FIELD
+Evidence base: ${evtypes||'[describe]'}
+${nodata?'\nEvidence collection context:\n'+nodata:''}
+${numbers?'\nProgramme results:\n'+numbers:''}
+
+Observed outcomes:
+${change}
+${gesi?'\nGender and inclusion:\n'+gesi:''}
+
+THE STRUCTURAL PROBLEM
+${barrier}
+${fundprob?'\nFunding structure evidence:\n'+fundprob:''}
+${sectorhop&&sectorhop.includes('Yes')?'\nImpact of sector hopping:\nLike many local organisations, we have been pushed to shift between sectors to follow available funding, preventing us from building deep expertise. This is not a choice: it is a direct consequence of how the current funding model works.':''}
+${evburden?'\nEvidence burden in conflict contexts:\n'+evburden:''}
+${comgap?'\nCommunications and visibility gap:\n'+comgap:''}
+
+RECOMMENDATIONS TO DONORS AND INTERNATIONAL PARTNERS
+
+1. ${ask}
+
+2. Provide multi-year, flexible funding of at least 2 to 3 years so local organisations can retain staff, build internal systems, and plan ahead rather than chasing short-term contracts across sectors.
+
+3. Mandate co-designed proposals and budgets. Local actors must be involved in programme design and budget allocation from the beginning, not brought in only to implement pre-designed projects.
+
+4. Accept context-appropriate evidence. Requirements designed for stable settings are impossible and sometimes unsafe to meet in conflict contexts. Community verification, verbal testimony, and approximate data should be accepted.
+
+5. Allocate direct communications budgets to local partners. Local organisations do the field work but cannot tell their own story because they have no communications resources. International organisations dominate donor narratives not because they do more work but because they have dedicated budgets for reporting, websites, and visibility. This must change.
+
+6. Publicly credit local organisations. Require INGOs and UN agencies to co-brand, co-author, and explicitly acknowledge local implementing partners in all donor reports and public outputs.
+${scale?'\nWhat is possible with direct funding:\n'+scale:''}
+
+ABOUT THIS BRIEF
+This brief is based on direct programme experience by ${org} in ${country}.
+${!isLow?'Contact: [name and contact details]':'Contact us through a trusted intermediary.'}
+
+EDITOR NOTES: Fill all [brackets]. Do not name political parties or politicians. Review safety note before sharing.`;
+
+  const platform=a.digital_platform||'';
+  const isFB=platform.toLowerCase().includes('facebook')||platform.toLowerCase().includes('social');
+
+  const digitalPost=isFB?
+`DIGITAL ADVOCACY POST (Short version for social media)
+${org} | ${country} | [Date]
+
+${safeNote}
+
+We are ${org}. We work with ${community} in ${country}.
+
+The problem:
+${problem}
+
+What we do:
+${whatwedo}
+
+What we have seen change:
+${change}
+${gesi?gesi:''}
+
+The system problem:
+${barrier}
+
+What we are asking for:
+${ask}
+
+${!isLow?'Follow us at [website and social media link] to learn more.\nContact us: [contact if safe to share]':''}
+
+#LocalActors #LocalLed #Localisation #[AddYourContext]
+
+EDITOR NOTES: Remove label before posting. Fill [brackets]. ${isLow?'Do not post publicly: share only with trusted contacts.':''}`:
+`DIGITAL ADVOCACY POST (Long version for website, newsletter, or professional platforms)
+${org} | ${country} | [Date]
+
+${safeNote}
+
+ABOUT ${org.toUpperCase()}
+We are ${org}, a ${a.org_type||'local organisation'} working in ${country}. We have been working with ${community} for ${a.years||'[duration]'}.
+
+This post is part of our effort to share our field evidence directly with donors, policymakers, and international partners, so that local organisations like ours can be seen, heard, and funded on our own terms.
+
+THE PROBLEM WE ADDRESS
+${problem}
+
+WHAT WE DO
+${whatwedo}
+
+WHAT OUR EVIDENCE SHOWS
+${numbers?numbers+'\n\n':''}${change}
+${gesi?'\nGender and inclusion:\n'+gesi:''}
+
+THE SYSTEM WE ARE WORKING WITHIN
+${barrier}
+${fundprob?'\n'+fundprob:''}
+${comgap?'\nCommunications and visibility:\n'+comgap:''}
+
+WHAT WE ARE CALLING FOR
+${ask}
+${scale?'\nIf we received direct funding:\n'+scale:''}
+
+ABOUT THIS POST
+This post is based on evidence from our direct programme work. We are sharing it publicly because local organisations like ours are often invisible in donor spaces. We do the work. We should tell the story.
+
+${!isLow?'To learn more or to discuss partnership or funding:\n[Contact details]\n[Website]\n[Social media]':'For enquiries, contact us through a trusted intermediary.'}
+
+#LocalActors #LocalLed #Localisation #SocialProtection #[AddYourContext]
+
+EDITOR NOTES: Remove label before posting. Fill [brackets]. ${isLow?'Do not post publicly: share only with trusted contacts. This draft is ready for when your situation allows more visibility.':''}`;
+
+  const whereData={
+    concept:[
+      {t:"UN Partner Portal (unpartnerportal.org)",b:"Register your organisation here first. This is the main gateway for UN agencies including UNICEF, UNHCR, UNFPA, and UN Women to vet and fund local partners directly. Free to register."},
+      {t:"Grand Bargain donors: FCDO, USAID, EU",b:"These donors have signed commitments to increase direct funding to local organisations. FCDO has explicitly adjusted evidence requirements and extended reporting timelines. USAID has a local works mandate. Send your concept note directly to their country representatives."},
+      {t:"INGO Forum and Myanmar National Humanitarian Network (MNHN)",b:"Joining these networks gives you visibility with INGOs seeking local partners and allows you to collectively advocate for better sub-granting terms."},
+      {t:"Start Fund (startnetwork.org)",b:"Designed to fund local organisations for rapid humanitarian response. Simpler application process than most bilateral donors. Actively seeks local partners in conflict-affected contexts."},
+      {t:"GlobalGiving (globalgiving.org)",b:"Once vetted, local organisations can raise funds directly from international donors and corporate foundations, reducing dependence on INGO intermediaries."},
+      {t:"Ground Truth Institute",b:"We work to connect local field evidence with international policy audiences and can help introduce your concept note to relevant donors. Contact us at [website placeholder]."}
+    ],
+    advocacy:[
+      {t:"Cash and Voucher Assistance Working Group in your country",b:"If active in your context, this group (often OCHA-led) is where donor cash transfer policies are discussed. Sharing your evidence brief puts it in front of the donors and INGOs who design the programmes you implement."},
+      {t:"Grand Bargain Localisation Workstream: ICVA (icvanetwork.org)",b:"The International Council of Voluntary Agencies collects evidence from local organisations for the Grand Bargain accountability process. Send your brief to ICVA to reach donors who have made localisation commitments."},
+      {t:"FCDO Research and Evidence Division",b:"FCDO has stated it wants more evidence from local actors. A well-evidenced brief from a credible local organisation is genuinely useful to their country teams."},
+      {t:"ODI Humanitarian Policy Group (odi.org)",b:"ODI actively cites evidence from local organisations in their localisation research. If they reference your evidence it reaches policy audiences significantly beyond your own network."},
+      {t:"Women's League of Burma and ethnic civil society networks",b:"These networks provide collective advocacy platforms for local organisations in Myanmar. Sharing your evidence through them amplifies it within the wider civil society advocacy space."},
+      {t:"Ground Truth Institute",b:"We translate local field evidence into policy briefs for donor audiences and amplify findings through our advocacy channels. Contact us at [website placeholder]."}
+    ],
+    digital:[
+      {t:"Facebook pages and groups",b:"Facebook is the most widely used platform in Myanmar and Southeast Asia. Create an organisation page if you do not have one. Share your post and ask your network to share it further. Relevant groups include Myanmar civil society networks and localisation communities."},
+      {t:"LinkedIn",b:"LinkedIn is where international donors, INGO staff, and development professionals are most active. A post from a credible local organisation with field evidence reaches exactly the decision-makers you need to influence. Use hashtags: LocalLed, Localisation, SocialProtection."},
+      {t:"ReliefWeb (reliefweb.int)",b:"The main humanitarian sector information platform. You can publish your advocacy brief directly to ReliefWeb for free. It will be indexed and read by donors, UN agencies, and INGOs worldwide."},
+      {t:"Devex (devex.com)",b:"A professional development sector platform. You can submit opinion pieces. A first-person piece from a local CSO programme manager about the funding structure problem is highly relevant and publishable."},
+      {t:"Your own website",b:"A simple website with your evidence brief, contact details, and description of your work gives donors a direct way to find and assess you, reducing dependence on INGO intermediaries. Free platforms: WordPress, Wix, Google Sites."},
+      {t:"Ground Truth Institute website and network",b:"We publish local organisation evidence on our platform and share it with our donor and policy audience. Send your post or brief to us at [website placeholder]."}
+    ]
+  };
+
+  const c=document.getElementById('sc');
+  let h=`<div class="stage active">
+  <div class="stage-tag">Your documents are ready</div>
+  <div class="stage-title">Review, edit, and submit</div>
+  <p class="stage-desc">Read each document carefully. Fill in anything marked [in brackets]. Apply the safety notes before sharing with anyone.</p>
+
+  <div class="tab-row">
+    ${wC?`<button class="tab-btn active" onclick="st('concept',this)"><i class="ti ti-file-description" aria-hidden="true"></i> Concept note</button>`:''}
+    ${wA?`<button class="tab-btn ${!wC?'active':''}" onclick="st('advocacy',this)"><i class="ti ti-file-analytics" aria-hidden="true"></i> Donor brief</button>`:''}
+    ${wD?`<button class="tab-btn ${!wC&&!wA?'active':''}" onclick="st('digital',this)"><i class="ti ti-world-upload" aria-hidden="true"></i> Digital post</button>`:''}
+    <button class="tab-btn" onclick="st('where',this)"><i class="ti ti-send" aria-hidden="true"></i> Where to submit</button>
+  </div>`;
+
+  if(wC){h+=`<div class="osec active" id="tab-concept"><div class="output-panel"><div class="output-label">Project concept note</div><div class="alert alert-warn"><i class="ti ti-shield-check" aria-hidden="true"></i><span>Read the safety note at the top of the document before sharing. Fill all [brackets].</span></div><div class="output-body" id="cb">${concept}</div><button class="copy-btn" onclick="cp('cb')"><i class="ti ti-copy" aria-hidden="true"></i> Copy to clipboard</button></div></div>`;}
+  if(wA){h+=`<div class="osec ${!wC?'active':''}" id="tab-advocacy"><div class="output-panel"><div class="output-label">Donor advocacy brief</div><div class="alert alert-warn"><i class="ti ti-shield-check" aria-hidden="true"></i><span>Do not name political parties or politicians. Review the safety note. Fill all [brackets].</span></div><div class="output-body" id="ab">${advBrief}</div><button class="copy-btn" onclick="cp('ab')"><i class="ti ti-copy" aria-hidden="true"></i> Copy to clipboard</button></div></div>`;}
+  if(wD){h+=`<div class="osec ${!wC&&!wA?'active':''}" id="tab-digital"><div class="output-panel"><div class="output-label">Digital advocacy post</div>${isLow?`<div class="alert alert-danger"><i class="ti ti-alert-triangle" aria-hidden="true"></i><span>Your organisation is low-profile. Do not post this content publicly. Share only with trusted contacts. The draft is ready for when your situation allows more visibility.</span></div>`:`<div class="alert alert-success"><i class="ti ti-check" aria-hidden="true"></i><span>Sharing your own evidence publicly is a legitimate and important step toward direct donor relationships and reducing dependence on INGO intermediaries.</span></div>`}<div class="output-body" id="db">${digitalPost}</div><button class="copy-btn" onclick="cp('db')"><i class="ti ti-copy" aria-hidden="true"></i> Copy to clipboard</button></div></div>`;}
+
+  h+=`<div class="osec" id="tab-where"><p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem">Use this to find the right people and platforms for your documents.</p>`;
+  if(wC){h+=`<p style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px">For your concept note</p>`;whereData.concept.forEach(w=>{h+=`<div class="where-card"><div class="where-card-title">${w.t}</div><div class="where-card-body">${w.b}</div></div>`;});}
+  if(wA){h+=`<p style="font-size:13px;font-weight:500;color:var(--text);margin:1rem 0 8px">For your advocacy brief</p>`;whereData.advocacy.forEach(w=>{h+=`<div class="where-card"><div class="where-card-title">${w.t}</div><div class="where-card-body">${w.b}</div></div>`;});}
+  if(wD){h+=`<p style="font-size:13px;font-weight:500;color:var(--text);margin:1rem 0 8px">For your digital post</p>`;whereData.digital.forEach(w=>{h+=`<div class="where-card"><div class="where-card-title">${w.t}</div><div class="where-card-body">${w.b}</div></div>`;});}
+  h+=`</div>
+
+  <div class="nav-row">
+    <button class="reset-btn" onclick="reset()"><i class="ti ti-refresh" aria-hidden="true"></i> Start again</button>
+  </div></div>`;
+
+  c.innerHTML=h;
+  document.getElementById('pips').querySelectorAll('.pip').forEach(p=>p.classList.add('done'));
+  document.getElementById('plbl').textContent='Complete';
+}
+
+function st(id,btn){
+  document.querySelectorAll('.osec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('tab-'+id);if(el)el.classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function cp(id){
+  const el=document.getElementById(id);if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const b=el.parentElement.querySelector('.copy-btn');
+    if(b){b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Copied';setTimeout(()=>{b.innerHTML='<i class="ti ti-copy" aria-hidden="true"></i> Copy to clipboard';},2000);}
+  });
+}
+function reset(){ans={};cur=0;bp();bs(0);window.scrollTo(0,0);}
+bp();bs(0);
+</script>
+</body>
+</html>
