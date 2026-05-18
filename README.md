@@ -27,7 +27,7 @@ Built specifically for the realities of organisations working in Myanmar and Sou
 
 ### Option 1: Use online (no installation needed)
 
-Visit: **[your-github-username.github.io/evidence-toolkit](https://your-github-username.github.io/evidence-toolkit)**
+Visit: **[your-github-username.github.io/evidence-toolkit](https://your-github-username.github.io/evidence-advocacy-toolkit)**
 
 Works in any browser. No login. No data stored.
 
@@ -69,7 +69,7 @@ Each document includes:
 This toolkit is grounded in:
 
 - Primary field research with 40+ local CSOs and NGOs in Myanmar (2024 to 2025)
-- Key informant interviews with organisations including KMSS, CDA, Karen Development Network, Relief International, ADRA, and UNICEF social protection teams
+- Key informant interviews, focus group discussions, and surveys with local and international organisations
 - The policy brief: *"Advancing Local Leadership in Myanmar's Social Protection Programmes: What Can Donors Do?"* (Fakmawii, 2025, STAAR Facility / FCDO)
 - Field research across Rakhine, Kachin, Shan, Kayah, and Kayin states
 
@@ -116,17 +116,6 @@ This toolkit was designed for Myanmar and Southeast Asia but the framework appli
 - Communications gaps that make local work invisible in donor spaces
 
 To adapt for a specific country or context, update the "where to submit" guidance and the contextual hints within each stage.
-
----
-
-## About Ground Truth Institute
-
-Ground Truth Institute is a locally-partnered research, practice, and policy organisation working on digital social protection, livelihood resilience, and community finance in fragile and conflict-affected markets.
-
-We exist to generate locally-grounded evidence, develop practical tools for practitioners, influence donor policy, and provide knowledge advisory services that strengthen outcomes for the most marginalised communities.
-
-**Website:** [placeholder]
-**Contact:** [placeholder]
 
 ---
 
